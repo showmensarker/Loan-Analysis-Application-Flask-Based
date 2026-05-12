@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card form-card">
+
+    <h2>Add Loan</h2>
+
+    <p class="subtitle">
+        Enter an existing customer ID to create a loan.
+    </p>
+
+    <form method="POST">
+
+        <!-- Customer ID -->
+        <input
+            type="number"
+            min="1"
+            name="customer_id"
+            placeholder="Enter Customer ID"
+            required
+        >
+
+        <!-- Loan Amount -->
+        <input
+            type="number"
+            step="0.01"
+            min="0"
+            name="loan_amount"
+            placeholder="Loan Amount"
+            required
+        >
+
+        <!-- Credit Score -->
+        <input
+            type="number"
+            min="0"
+            name="credit_score"
+            placeholder="Credit Score"
+            required
+        >
+
+        <!-- Default Status -->
+        <select name="default_status" required>
+
+            <option value="0">
+                Not Defaulted
+            </option>
+
+            <option value="1">
+                Defaulted
+            </option>
+
+        </select>
+
+        <!-- Submit -->
+        <button
+            type="submit"
+            class="btn"
+        >
+            Add Loan
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

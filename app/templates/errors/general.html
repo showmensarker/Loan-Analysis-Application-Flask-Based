@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Error card -->
+<div class="card">
+
+    <!-- Error title -->
+    <h2>
+        Unexpected Error
+    </h2>
+
+    <!-- Error message -->
+    <p>
+        Something unexpected happened while processing your request.
+    </p>
+
+    <!-- Additional message -->
+    <p>
+        Please try again later.
+    </p>
+
+    <!-- Home button -->
+    <a
+        href="{{ url_for('main.home') }}"
+        class="btn"
+    >
+        Go Home
+    </a>
+
+</div>
+
+{% endblock %}

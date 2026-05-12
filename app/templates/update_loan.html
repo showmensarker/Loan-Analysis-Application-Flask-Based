@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card form-card">
+
+    <h2>Update Loan</h2>
+
+    <form method="POST">
+
+        <!-- Loan Amount -->
+        <input
+            type="number"
+            step="0.01"
+            min="0"
+            name="loan_amount"
+            value="{{ loan.loan_amount }}"
+            required
+        >
+
+        <!-- Credit Score -->
+        <input
+            type="number"
+            min="0"
+            name="credit_score"
+            value="{{ loan.credit_score }}"
+            required
+        >
+
+        <!-- Default Status -->
+        <select name="default_status">
+
+            <option
+                value="0"
+                {% if loan.default_status == 0 %}
+                    selected
+                {% endif %}
+            >
+                Not Defaulted
+            </option>
+
+            <option
+                value="1"
+                {% if loan.default_status == 1 %}
+                    selected
+                {% endif %}
+            >
+                Defaulted
+            </option>
+
+        </select>
+
+        <!-- Submit -->
+        <button class="btn">
+            Update Loan
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

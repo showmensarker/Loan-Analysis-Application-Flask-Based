@@ -1,0 +1,528 @@
+/* GLOBAL STYLES */
+
+/* Main page background and typography setup */
+body {
+    margin: 0;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    color: #2c3e50;
+
+    background: url("/static/background.png")
+        no-repeat center center fixed;
+
+    background-size: cover;
+}
+
+
+/* Reset for navigation and functional links */
+a {
+    text-decoration: none;
+
+    color: inherit;
+}
+
+
+/* LAYOUT STRUCTURE */
+
+.layout {
+    display: flex;
+}
+
+
+/* SIDEBAR NAVIGATION */
+
+.sidebar {
+    width: 220px;
+
+    height: 100vh;
+
+    padding: 25px 15px;
+
+    position: fixed;
+
+    background: rgba(30, 42, 56, 0.95);
+
+    color: white;
+}
+
+
+.logo {
+    margin-bottom: 30px;
+
+    font-size: 20px;
+
+    font-weight: 600;
+}
+
+
+.nav-item {
+    display: block;
+
+    padding: 12px;
+
+    margin-bottom: 6px;
+
+    border-radius: 6px;
+
+    color: #cfd8e3;
+
+    transition: background 0.2s ease;
+}
+
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+.nav-item.active {
+    background: #34495e;
+
+    color: white;
+}
+
+
+/* MAIN CONTENT AREA */
+
+.main {
+    width: 100%;
+
+    min-height: 100vh;
+
+    margin-left: 240px;
+
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.65);
+}
+
+
+.page-header h2 {
+    margin: 0;
+}
+
+
+.subtitle {
+    color: #7f8c8d;
+}
+
+
+/* DATA FILTERS */
+
+.filter-bar {
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+
+.filter-bar input,
+.filter-bar select {
+    height: 38px;
+
+    padding: 0 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    background: white;
+}
+
+
+/* BUTTON COMPONENTS */
+
+.btn {
+    padding: 8px 16px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #2c3e50;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+
+.btn:hover {
+    background: #34495e;
+}
+
+
+.danger-btn {
+    background: #e74c3c;
+}
+
+
+.danger-btn:hover {
+    background: #c0392b;
+}
+
+
+td .btn {
+    display: inline-block;
+
+    margin: 2px;
+}
+
+
+td.center {
+    white-space: nowrap;
+}
+
+
+/* DATA TABLES */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.9);
+}
+
+
+th {
+    padding: 14px 30px;
+
+    background: #1e2a38;
+
+    color: white;
+
+    text-align: center;
+}
+
+
+td {
+    padding: 14px 30px;
+
+    border-bottom: 1px solid #eee;
+
+    text-align: center;
+
+    vertical-align: middle;
+}
+
+
+tr:nth-child(even) {
+    background: #f9fbfd;
+}
+
+
+tr:hover {
+    background: #eef3f8;
+}
+
+
+table a {
+    color: #2c3e50;
+
+    font-weight: normal;
+}
+
+
+table a:hover {
+    color: #4a6fa5;
+
+    text-decoration: underline;
+}
+
+
+/* UTILITY CLASSES */
+
+.center {
+    text-align: center;
+}
+
+
+.right {
+    text-align: right;
+}
+
+
+td.right {
+    text-align: right;
+
+    font-variant-numeric: tabular-nums;
+}
+
+
+th.right {
+    text-align: right;
+}
+
+
+/* STATUS INDICATORS */
+
+.red {
+    color: #e74c3c;
+
+    font-weight: 600;
+
+    display: inline-block;
+
+    min-width: 90px;
+}
+
+
+.green {
+    color: #27ae60;
+
+    font-weight: 600;
+
+    display: inline-block;
+
+    min-width: 90px;
+}
+
+
+/* CARD COMPONENTS */
+
+.card {
+    margin-bottom: 20px;
+
+    padding: 18px;
+
+    border-radius: 10px;
+
+    border-left: 4px solid #4a6fa5;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+
+.card img {
+    width: 80%;
+
+    max-height: 420px;
+
+    display: block;
+
+    margin: 20px auto;
+
+    object-fit: contain;
+}
+
+
+.card table {
+    margin-top: 10px;
+}
+
+
+/* DASHBOARD GRID */
+
+.dashboard {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 20px;
+}
+
+
+.dashboard a {
+    color: inherit;
+}
+
+
+.dashboard .card {
+    cursor: pointer;
+}
+
+
+/* FORM ELEMENTS */
+
+.action-bar {
+    margin-bottom: 15px;
+}
+
+
+.form-card {
+    max-width: 500px;
+
+    margin: auto;
+}
+
+
+.form-card form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+
+.form-card form input,
+.form-card form select {
+    padding: 12px;
+
+    border-radius: 8px;
+
+    border: 1px solid #ccc;
+
+    font-size: 15px;
+
+    background: white;
+}
+
+
+/* PAGINATION */
+
+.pagination {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 25px;
+
+    margin-bottom: 20px;
+}
+
+.pagination .btn {
+    min-width: 110px;
+
+    text-align: center;
+}
+
+/* LOGIN PAGE */
+
+.login-wrapper {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    min-height: 70vh;
+}
+
+
+.login-card {
+
+    width: 400px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    padding: 40px;
+
+    border-radius: 16px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+    text-align: center;
+}
+
+
+.login-card h2 {
+
+    margin-bottom: 30px;
+
+    color: #243447;
+
+    font-size: 32px;
+}
+
+
+.login-card form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+.login-card input {
+
+    padding: 14px;
+
+    border: 1px solid #dcdcdc;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+
+.login-card input:focus {
+
+    border-color: #2f5fa7;
+}
+
+
+.login-card button {
+
+    background: #243447;
+
+    color: white;
+
+    border: none;
+
+    padding: 14px;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+.login-card button:hover {
+
+    background: #2f5fa7;
+}
+
+/* FOOTER */
+
+.footer {
+    margin-top: 40px;
+
+    padding: 15px;
+
+    text-align: center;
+
+    color: #666;
+
+    font-size: 14px;
+}

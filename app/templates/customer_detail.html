@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Customer information -->
+<div class="card">
+
+    <h2>Customer Details</h2>
+
+    <!-- Customer ID -->
+    <p>
+
+        <strong>ID:</strong>
+
+        {{ customer.id }}
+
+    </p>
+
+    <!-- Customer age -->
+    <p>
+
+        <strong>Age:</strong>
+
+        {{ customer.age }}
+
+    </p>
+
+    <!-- Customer income -->
+    <p>
+
+        <strong>Income:</strong>
+
+        {{ "{:,.2f}".format(customer.income or 0) }}
+
+    </p>
+
+    <!-- Total loans -->
+    <p>
+
+        <strong>Total Loans:</strong>
+
+        {{ loan_count }}
+
+    </p>
+
+    <!-- Customer gender -->
+    <p>
+
+        <strong>Gender:</strong>
+
+        {{ customer.gender or "Not Available" }}
+
+    </p>
+
+</div>
+
+
+<!-- Customer loans -->
+<div class="card">
+
+    <h2>Loans Taken</h2>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Loan Amount</th>
+                <th>Score</th>
+                <th>Status</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <!-- Show message if no loans -->
+            {% if loans|length == 0 %}
+
+            <tr>
+
+                <td colspan="3" class="center">
+
+                    No loans available for this customer.
+
+                </td>
+
+            </tr>
+
+            {% endif %}
+
+            <!-- Loop through loans -->
+            {% for loan in loans %}
+
+            <tr>
+
+                <!-- Loan amount -->
+                <td>
+
+                    {{ "{:,.2f}".format(loan.loan_amount or 0) }}
+
+                </td>
+
+                <!-- Credit score -->
+                <td>
+
+                    {{ loan.credit_score }}
+
+                </td>
+
+                <!-- Loan status -->
+                <td>
+
+                    {% if loan.default_status == 1 %}
+
+                        <span class="red">
+                            Defaulted
+                        </span>
+
+                    {% else %}
+
+                        <span class="green">
+                            Safe
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

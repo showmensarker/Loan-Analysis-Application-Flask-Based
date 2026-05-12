@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- 405 error message card -->
+<div class="card">
+
+    <!-- Error title -->
+    <h2>405 - Method Not Allowed</h2>
+
+    <!-- Error description -->
+    <p>
+        This request method is not allowed.
+    </p>
+
+    <!-- Return to home page -->
+    <a
+        href="{{ url_for('main.home') }}"
+        class="btn"
+    >
+
+        Go Home
+
+    </a>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Page heading -->
+<div class="page-header">
+
+    <h2>Loans</h2>
+
+    <p class="subtitle">
+        Loan performance and credit scores
+    </p>
+
+</div>
+
+
+<!-- Add loan button -->
+<div class="action-bar">
+
+    <a
+        href="{{ url_for('main.add_loan') }}"
+        class="btn"
+    >
+        Add Loan
+    </a>
+
+</div>
+
+
+<!-- Filter form -->
+<form method="GET" class="filter-bar">
+
+    <input
+        type="number"
+        name="score"
+        placeholder="Min credit score"
+        value="{{ request.args.get('score', '') }}"
+    >
+
+    <button class="btn">
+        Filter
+    </button>
+
+</form>
+
+
+<!-- Responsive table -->
+<div class="table-wrapper">
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>ID</th>
+            <th>Loan Amount</th>
+            <th>Score</th>
+            <th>Customer</th>
+            <th>Risk</th>
+            <th>Status</th>
+            <th>Actions</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% if loans.items|length == 0 %}
+
+        <tr>
+
+            <td colspan="7" class="center">
+
+                No loans found.
+
+            </td>
+
+        </tr>
+
+        {% endif %}
+
+        {% for loan in loans.items %}
+
+        <tr>
+
+            <td>
+
+                {{ loan.id }}
+
+            </td>
+
+            <td>
+
+                {{ "{:,.2f}".format(loan.loan_amount or 0) }}
+
+            </td>
+
+            <td>
+
+                {{ loan.credit_score }}
+
+            </td>
+
+            <td>
+
+                <a href="{{ url_for('main.customer_detail', id=loan.customer_id) }}">
+
+                    {{ loan.customer_id }}
+
+                </a>
+
+            </td>
+
+            <!-- Risk -->
+            <td>
+
+                {% if loan.credit_score < 600 %}
+
+                    <span class="red">
+                        High Risk
+                    </span>
+
+                {% elif loan.credit_score <= 750 %}
+
+                    <span>
+                        Medium Risk
+                    </span>
+
+                {% else %}
+
+                    <span class="green">
+                        Low Risk
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <!-- Status -->
+            <td>
+
+                {% if loan.default_status == 1 %}
+
+                    <span class="red">
+                        Defaulted
+                    </span>
+
+                {% else %}
+
+                    <span class="green">
+                        Safe
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <!-- Actions -->
+            <td>
+
+                <!-- Update button -->
+                <a
+                    href="{{ url_for('main.update_loan', id=loan.id) }}"
+                    class="btn"
+                >
+                    Update
+                </a>
+
+                <!-- Delete button -->
+                <a
+                    href="{{ url_for('main.delete_loan', id=loan.id) }}"
+                    class="btn danger-btn"
+                    onclick="return confirm('Delete this loan?')"
+                >
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+
+<!-- Pagination -->
+<div class="pagination">
+
+    {% if loans.has_prev %}
+
+        <a
+            href="{{ url_for(
+                'main.loans',
+                page=loans.prev_num,
+                score=request.args.get('score', '')
+            ) }}"
+            class="btn"
+        >
+            Previous
+        </a>
+
+    {% endif %}
+
+    {% if loans.has_next %}
+
+        <a
+            href="{{ url_for(
+                'main.loans',
+                page=loans.next_num,
+                score=request.args.get('score', '')
+            ) }}"
+            class="btn"
+        >
+            Next
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

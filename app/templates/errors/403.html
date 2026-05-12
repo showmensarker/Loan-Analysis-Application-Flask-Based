@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Error card -->
+<div class="card">
+
+    <!-- Error title -->
+    <h2>403 - Forbidden</h2>
+
+    <!-- Error message -->
+    <p>
+        You do not have permission to access this page.
+    </p>
+
+    <!-- Home button -->
+    <a
+        href="{{ url_for('main.home') }}"
+        class="btn"
+    >
+        Go Home
+    </a>
+
+</div>
+
+{% endblock %}

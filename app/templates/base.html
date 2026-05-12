@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        Loan Analysis App
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <h2 class="logo">
+            LoanApp
+        </h2>
+
+        <!-- Navigation -->
+        <a
+            href="/"
+            class="nav-item {{ 'active' if request.path == '/' else '' }}"
+        >
+            Home
+        </a>
+
+        <a
+            href="/customers"
+            class="nav-item {{ 'active' if request.path == '/customers' else '' }}"
+        >
+            Customers
+        </a>
+
+        <a
+            href="/loans"
+            class="nav-item {{ 'active' if request.path == '/loans' else '' }}"
+        >
+            Loans
+        </a>
+
+        <a
+            href="/analysis"
+            class="nav-item {{ 'active' if request.path == '/analysis' else '' }}"
+        >
+            Analysis
+        </a>
+
+        <!-- Authentication Links -->
+        {% if "user" in session %}
+
+            <a
+                href="/logout"
+                class="nav-item"
+            >
+                Logout
+            </a>
+
+        {% else %}
+
+            <a
+                href="/login"
+                class="nav-item"
+            >
+                Login
+            </a>
+
+        {% endif %}
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="card"
+                        style="border-left-color: #27ae60;"
+                    >
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- Page Content -->
+        {% block content %}
+        {% endblock %}
+
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            <p>
+                Loan Analysis System | Flask Project
+            </p>
+
+            <span class="copyright">
+                © 2026 Showmen Sarker
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

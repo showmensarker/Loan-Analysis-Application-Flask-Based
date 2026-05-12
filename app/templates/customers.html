@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Page heading -->
+<div class="page-header">
+
+    <h2>Customers</h2>
+
+    <p class="subtitle">
+        Browse customer data
+    </p>
+
+</div>
+
+
+<!-- Add customer button -->
+<div class="action-bar">
+
+    <a
+        href="{{ url_for('main.add_customer') }}"
+        class="btn"
+    >
+        Add Customer
+    </a>
+
+</div>
+
+
+<!-- Search form -->
+<form method="GET" class="filter-bar">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by age"
+        value="{{ request.args.get('search', '') }}"
+    >
+
+    <select name="sort">
+
+        <option value="">
+            Sort By
+        </option>
+
+        <option value="income">
+            Highest Income
+        </option>
+
+    </select>
+
+    <button class="btn">
+        Search
+    </button>
+
+</form>
+
+
+<!-- Responsive table -->
+<div class="table-wrapper">
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>ID</th>
+            <th>Age</th>
+            <th class="right">Income</th>
+            <th class="center">Actions</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% if customers.items|length == 0 %}
+
+        <tr>
+
+            <td colspan="4" class="center">
+
+                No customers found.
+
+            </td>
+
+        </tr>
+
+        {% endif %}
+
+        {% for c in customers.items %}
+
+        <tr>
+
+            <td class="center">
+
+                <a href="{{ url_for('main.customer_detail', id=c.id) }}">
+
+                    {{ c.id }}
+
+                </a>
+
+            </td>
+
+            <td class="center">
+
+                {{ c.age }}
+
+            </td>
+
+            <td class="right">
+
+                {{ "{:,.2f}".format(c.income)
+                if c.income is not none
+                else "N/A" }}
+
+            </td>
+
+            <!-- Actions -->
+            <td class="center">
+
+                <!-- Update button -->
+                <a
+                    href="{{ url_for('main.update_customer', id=c.id) }}"
+                    class="btn"
+                >
+                    Update
+                </a>
+
+                <!-- Delete button -->
+                <a
+                    href="{{ url_for('main.delete_customer', id=c.id) }}"
+                    class="btn danger-btn"
+                    onclick="return confirm('Delete this customer?')"
+                >
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+
+<!-- Pagination -->
+<div class="pagination">
+
+    {% if customers.has_prev %}
+
+        <a
+            href="{{ url_for(
+                'main.customers',
+                page=customers.prev_num,
+                search=request.args.get('search', ''),
+                sort=request.args.get('sort', '')
+            ) }}"
+            class="btn"
+        >
+            Previous
+        </a>
+
+    {% endif %}
+
+    {% if customers.has_next %}
+
+        <a
+            href="{{ url_for(
+                'main.customers',
+                page=customers.next_num,
+                search=request.args.get('search', ''),
+                sort=request.args.get('sort', '')
+            ) }}"
+            class="btn"
+        >
+            Next
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

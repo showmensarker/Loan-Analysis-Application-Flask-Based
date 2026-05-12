@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card form-card">
+
+    <h2>Add Customer</h2>
+
+    <form method="POST">
+
+        <!-- Age Range -->
+        <input
+            type="text"
+            name="age"
+            placeholder="Age Range (Example: 24-30)"
+            pattern="[0-9]{1,3}-[0-9]{1,3}"
+            required
+        >
+
+        <!-- Income -->
+        <input
+            type="number"
+            step="0.01"
+            min="0"
+            name="income"
+            placeholder="Income"
+            required
+        >
+
+        <!-- Gender -->
+        <select name="gender" required>
+
+            <option value="">
+                Select Gender
+            </option>
+
+            <option value="Male">
+                Male
+            </option>
+
+            <option value="Female">
+                Female
+            </option>
+
+        </select>
+
+        <!-- Submit -->
+        <button class="btn">
+            Add Customer
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

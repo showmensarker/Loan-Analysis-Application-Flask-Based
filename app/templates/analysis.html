@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Page heading -->
+<div class="page-header">
+
+    <h2>Data Dashboard</h2>
+
+    <p class="subtitle">
+        Loan performance insights
+    </p>
+
+</div>
+
+
+<!-- KPI cards -->
+<div class="dashboard">
+
+    <!-- Average income -->
+    <div class="card">
+
+        <h4>Average Income</h4>
+
+        <h2>
+            {{ "{:,.2f}".format(avg_income) }}
+        </h2>
+
+    </div>
+
+    <!-- Average loan -->
+    <div class="card">
+
+        <h4>Average Loan</h4>
+
+        <h2>
+            {{ "{:,.2f}".format(avg_loan) }}
+        </h2>
+
+    </div>
+
+    <!-- Maximum loan -->
+    <div class="card">
+
+        <h4>Max Loan</h4>
+
+        <h2>
+            {{ "{:,.2f}".format(max_loan) }}
+        </h2>
+
+    </div>
+
+    <!-- Total defaults -->
+    <div class="card red">
+
+        <h4>Total Defaults</h4>
+
+        <h2>
+            {{ total_defaults }}
+        </h2>
+
+    </div>
+
+</div>
+
+
+<!-- Additional analysis cards -->
+<div class="dashboard">
+
+    <!-- Average credit score -->
+    <div class="card">
+
+        <h4>Average Credit Score</h4>
+
+        <h2>
+            {{ average_credit_score }}
+        </h2>
+
+    </div>
+
+    <!-- Default percentage -->
+    <div class="card red">
+
+        <h4>Default Rate</h4>
+
+        <h2>
+            {{ default_percentage }}%
+        </h2>
+
+    </div>
+
+    <!-- Safe loan percentage -->
+    <div class="card green">
+
+        <h4>Safe Loans</h4>
+
+        <h2>
+            {{ safe_percentage }}%
+        </h2>
+
+    </div>
+
+</div>
+
+
+<!-- Risk category cards -->
+<div class="dashboard">
+
+    <!-- High risk -->
+    <div class="card red">
+
+        <h4>High Risk</h4>
+
+        <h2>
+            {{ high_risk }}
+        </h2>
+
+    </div>
+
+    <!-- Medium risk -->
+    <div class="card">
+
+        <h4>Medium Risk</h4>
+
+        <h2>
+            {{ medium_risk }}
+        </h2>
+
+    </div>
+
+    <!-- Low risk -->
+    <div class="card green">
+
+        <h4>Low Risk</h4>
+
+        <h2>
+            {{ low_risk }}
+        </h2>
+
+    </div>
+
+</div>
+
+
+<!-- Chart section -->
+<div class="card">
+
+    <h3>Defaults by Age</h3>
+
+    <!-- Chart image -->
+    <img
+        src="{{ url_for('static', filename='chart.png') }}"
+    >
+
+</div>
+
+
+<!-- Risky customers table -->
+<div class="card">
+
+    <h3>Top Risky Customers</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Age</th>
+                <th class="right">Income</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <!-- Show message if no risky customers -->
+            {% if risky_customers.items|length == 0 %}
+
+            <tr>
+
+                <td colspan="3" class="center">
+
+                    No risky customers found.
+
+                </td>
+
+            </tr>
+
+            {% endif %}
+
+            <!-- Loop through customers -->
+            {% for c in risky_customers.items %}
+
+            <tr>
+
+                <!-- Customer ID -->
+                <td class="center">
+
+                    {{ c.id }}
+
+                </td>
+
+                <!-- Customer age -->
+                <td class="center">
+
+                    {{ c.age }}
+
+                </td>
+
+                <!-- Customer income -->
+                <td class="right">
+
+                    {{ "{:,.2f}".format(c.income)
+                    if c.income is not none
+                    else "N/A" }}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- Pagination -->
+<div class="pagination">
+
+    {% if risky_customers.has_prev %}
+
+        <a
+            href="{{ url_for(
+                'main.analysis',
+                page=risky_customers.prev_num
+            ) }}"
+            class="btn"
+        >
+            Previous
+        </a>
+
+    {% endif %}
+
+    {% if risky_customers.has_next %}
+
+        <a
+            href="{{ url_for(
+                'main.analysis',
+                page=risky_customers.next_num
+            ) }}"
+            class="btn"
+        >
+            Next
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

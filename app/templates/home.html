@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Page heading -->
+<div class="page-header">
+
+    <h2>Dashboard</h2>
+
+    <p class="subtitle">
+        Overview of loan data
+    </p>
+
+</div>
+
+
+<!-- Risk chart section -->
+<div class="card">
+
+    <h3>Loan Risk Distribution</h3>
+
+    <!-- Chart image -->
+    <img
+        src="{{ url_for('static', filename='home_chart.png') }}"
+    >
+
+</div>
+
+
+<!-- Dashboard cards -->
+<div class="dashboard">
+
+    <!-- Customers card -->
+    <a href="{{ url_for('main.customers') }}">
+
+        <div class="card">
+
+            <h3>Customers</h3>
+
+            <p>
+                View customer profiles
+            </p>
+
+        </div>
+
+    </a>
+
+    <!-- Loans card -->
+    <a href="{{ url_for('main.loans') }}">
+
+        <div class="card">
+
+            <h3>Loans</h3>
+
+            <p>
+                Analyze loan data
+            </p>
+
+        </div>
+
+    </a>
+
+    <!-- Analysis card -->
+    <a href="{{ url_for('main.analysis') }}">
+
+        <div class="card">
+
+            <h3>Analysis</h3>
+
+            <p>
+                View insights and trends
+            </p>
+
+        </div>
+
+    </a>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Error card -->
+<div class="card">
+
+    <!-- Error title -->
+    <h2>400 - Bad Request</h2>
+
+    <!-- Error message -->
+    <p>
+        The request could not be processed.
+    </p>
+
+    <!-- Back to home button -->
+    <a
+        href="{{ url_for('main.home') }}"
+        class="btn"
+    >
+        Go Home
+    </a>
+
+</div>
+
+{% endblock %}

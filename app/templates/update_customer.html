@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card form-card">
+
+    <h2>Update Customer Income</h2>
+
+    <form method="POST">
+
+        <!-- Customer Age -->
+        <input
+            type="text"
+            value="{{ customer.age }}"
+            disabled
+        >
+
+        <!-- Customer Gender -->
+        <input
+            type="text"
+            value="{{ customer.gender }}"
+            disabled
+        >
+
+        <!-- Customer Income -->
+        <input
+            type="number"
+            step="0.01"
+            min="0"
+            name="income"
+            value="{{ customer.income }}"
+            required
+        >
+
+        <!-- Submit -->
+        <button class="btn">
+            Update Income
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Login Page Wrapper -->
+<div class="login-wrapper">
+
+    <!-- Login Card Container -->
+    <div class="login-card">
+
+        <!-- Page Heading -->
+        <h2>
+            Admin Login
+        </h2>
+
+        <!-- Login Form -->
+        <form method="POST">
+
+            <!-- Username Input -->
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+            >
+
+            <!-- Password Input -->
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+            >
+
+            <!-- Submit Button -->
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
