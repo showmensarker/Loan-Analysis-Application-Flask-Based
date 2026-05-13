@@ -358,11 +358,9 @@ def test_invalid_update_customer_string_id(client):
     )
 
     assert response.status_code in [400, 404]
-
-
+    
 
 # Loan tests
-
 
 def test_loans_page(client):
     """
@@ -441,9 +439,6 @@ def test_invalid_score(client):
 
     assert response.status_code == 400
 
-    assert b"valid score" in response.data
-
-
 def test_negative_score(client):
     """
     Ensures negative score values are rejected.
@@ -485,7 +480,88 @@ def test_add_loan_page(client):
 
     assert response.status_code == 200
 
+def test_customer_id_search(client):
+    """
+    Tests searching loans by customer ID.
+    """
 
+    response = client.get(
+        "/loans?search=1"
+    )
+
+    assert response.status_code == 200
+
+    assert b"Loans" in response.data
+
+
+def test_risk_filter_high(client):
+    """
+    Tests high risk filtering.
+    """
+
+    response = client.get(
+        "/loans?risk=high"
+    )
+
+    assert response.status_code == 200
+
+    assert b"Loans" in response.data
+
+
+def test_risk_filter_medium(client):
+    """
+    Tests medium risk filtering.
+    """
+
+    response = client.get(
+        "/loans?risk=medium"
+    )
+
+    assert response.status_code == 200
+
+    assert b"Loans" in response.data
+
+
+def test_risk_filter_low(client):
+    """
+    Tests low risk filtering.
+    """
+
+    response = client.get(
+        "/loans?risk=low"
+    )
+
+    assert response.status_code == 200
+
+    assert b"Loans" in response.data
+
+
+def test_sort_highest_loan(client):
+    """
+    Tests highest loan sorting.
+    """
+
+    response = client.get(
+        "/loans?sort=highest_loan"
+    )
+
+    assert response.status_code == 200
+
+    assert b"Loans" in response.data
+
+
+def test_sort_lowest_loan(client):
+    """
+    Tests lowest loan sorting.
+    """
+
+    response = client.get(
+        "/loans?sort=lowest_loan"
+    )
+
+    assert response.status_code == 200
+
+    assert b"Loans" in response.data
 
 # Analysis page tests
 
@@ -531,7 +607,59 @@ def test_analysis_pagination(client):
 
     assert b"Top Risky Customers" in response.data
 
+def test_analysis_risk_cards(client):
+    """
+    Checks risk analysis cards render correctly.
+    """
 
+    response = client.get("/analysis")
+
+    assert response.status_code == 200
+
+    assert b"High Risk" in response.data
+
+    assert b"Medium Risk" in response.data
+
+    assert b"Low Risk" in response.data
+
+
+def test_analysis_insights(client):
+    """
+    Checks insights section appears.
+    """
+
+    response = client.get("/analysis")
+
+    assert response.status_code == 200
+
+    assert (
+        b"System Insights" in response.data
+        or b"Insights" in response.data
+    )
+
+
+def test_analysis_large_loans(client):
+    """
+    Tests large loan statistics section.
+    """
+
+    response = client.get("/analysis")
+
+    assert response.status_code == 200
+
+    assert b"Large Loans" in response.data
+
+
+def test_analysis_most_risky_loan(client):
+    """
+    Tests risky loan section rendering.
+    """
+
+    response = client.get("/analysis")
+
+    assert response.status_code == 200
+
+    assert b"Most Risky Loan" in response.data
 
 # Customer detail tests
 

@@ -21,6 +21,7 @@ The application was built using Flask, SQLAlchemy, SQLite, HTML, CSS, and Matplo
 - Delete customers
 - View customer loan history
 - Customer pagination support
+- Sort customers by highest or lowest income
 
 ## Loan Management
 - View all loans
@@ -29,6 +30,8 @@ The application was built using Flask, SQLAlchemy, SQLite, HTML, CSS, and Matplo
 - Delete loans
 - View detailed loan records
 - Loan pagination support
+- Loan risk categorisation
+- Loan filtering and sorting
 
 ## Analysis Dashboard
 - Average customer income
@@ -44,8 +47,8 @@ The application was built using Flask, SQLAlchemy, SQLite, HTML, CSS, and Matplo
 - Defaults by age chart
 
 ## Filtering and Search
-- Search customers by age range
-- Filter loans using minimum credit score
+- Search customers by customer ID
+- Filter loans using minimum credit score, customer ID, and loan risk category
 
 ## Error Handling
 Custom error pages for:
@@ -72,6 +75,7 @@ loan_analysis_project/
 │   ├── static/
 │   │   ├── background.png
 │   │   ├── chart.png
+│   │   ├── favicon.png
 │   │   ├── home_chart.png
 │   │   └── style.css
 │   │
@@ -127,7 +131,7 @@ loan_analysis_project/
 ## Clone the repository
 
 ```bash
-git clone https://github.com/showmensarker/Loan-Analysis-Flask-Application
+git clone https://github.com/showmensarker/Loan-Analysis-Application-Flask-Based
 cd loan_analysis_project
 ```
 
@@ -270,7 +274,7 @@ The testing suite includes:
 - Analysis page testing
 - Static file testing
 
-The application includes over 50 automated tests covering both isolated logic and full route behaviour.
+The application includes over 60 automated tests covering both isolated logic and full route behaviour.
 
 Examples of tested features include:
 - Login and logout functionality
@@ -311,7 +315,7 @@ gunicorn run:app
 
 Some improvements that can be added later:
 - Password hashing
-- Better charts
+- Interactive charts and real-time analytics
 - Export reports
 - PostgreSQL database support
 - Docker deployment
@@ -322,11 +326,13 @@ Some improvements that can be added later:
 # Notes
 
 Some generated files were excluded using `.gitignore`:
-- `venv/`
-- `__pycache__/`
-- `*.pyc`
-- `app.log`
 
+venv/
+__pycache__/
+*.pyc
+.env
+app.log
+tempCodeRunnerFile.py
 ---
 
 # License
