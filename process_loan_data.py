@@ -16,8 +16,8 @@ df = pd.read_csv("Loan_Default.csv")
 # Clean up the column headers because extra spaces are the worst
 df.columns = df.columns.str.strip()
 
-# Truncating to 7000 rows so the local DB doesn't get sluggish
-df = df.head(7000)
+# Remove rows where income is 0
+df = df[df["income"] > 0]
 
 
 # Peel off the personal info for the Customers table

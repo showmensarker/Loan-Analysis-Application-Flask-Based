@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<!-- Page heading -->
+<!-- PAGE HEADER -->
+
 <div class="page-header">
 
     <h2>Data Dashboard</h2>
@@ -14,10 +15,12 @@
 </div>
 
 
-<!-- KPI cards -->
+<!-- MAIN KPI SECTION -->
+
 <div class="dashboard">
 
-    <!-- Average income -->
+    <!-- Average Income -->
+
     <div class="card">
 
         <h4>Average Income</h4>
@@ -26,9 +29,15 @@
             {{ "{:,.2f}".format(avg_income) }}
         </h2>
 
+        <p class="subtitle">
+            Customer income average
+        </p>
+
     </div>
 
-    <!-- Average loan -->
+
+    <!-- Average Loan -->
+
     <div class="card">
 
         <h4>Average Loan</h4>
@@ -37,9 +46,15 @@
             {{ "{:,.2f}".format(avg_loan) }}
         </h2>
 
+        <p class="subtitle">
+            Average issued loan amount
+        </p>
+
     </div>
 
-    <!-- Maximum loan -->
+
+    <!-- Maximum Loan -->
+
     <div class="card">
 
         <h4>Max Loan</h4>
@@ -48,9 +63,15 @@
             {{ "{:,.2f}".format(max_loan) }}
         </h2>
 
+        <p class="subtitle">
+            Largest loan issued
+        </p>
+
     </div>
 
-    <!-- Total defaults -->
+
+    <!-- Total Defaults -->
+
     <div class="card red">
 
         <h4>Total Defaults</h4>
@@ -59,15 +80,21 @@
             {{ total_defaults }}
         </h2>
 
+        <p class="subtitle">
+            Loans marked as defaulted
+        </p>
+
     </div>
 
 </div>
 
 
-<!-- Additional analysis cards -->
+<!-- SECOND KPI SECTION -->
+
 <div class="dashboard">
 
-    <!-- Average credit score -->
+    <!-- Average Credit Score -->
+
     <div class="card">
 
         <h4>Average Credit Score</h4>
@@ -76,9 +103,15 @@
             {{ average_credit_score }}
         </h2>
 
+        <p class="subtitle">
+            Overall borrower credit health
+        </p>
+
     </div>
 
-    <!-- Default percentage -->
+
+    <!-- Default Rate -->
+
     <div class="card red">
 
         <h4>Default Rate</h4>
@@ -87,9 +120,15 @@
             {{ default_percentage }}%
         </h2>
 
+        <p class="subtitle">
+            Percentage of failed loans
+        </p>
+
     </div>
 
-    <!-- Safe loan percentage -->
+
+    <!-- Safe Loans -->
+
     <div class="card green">
 
         <h4>Safe Loans</h4>
@@ -98,67 +137,233 @@
             {{ safe_percentage }}%
         </h2>
 
+        <p class="subtitle">
+            Loans without default
+        </p>
+
     </div>
 
 </div>
 
 
-<!-- Risk category cards -->
+<!-- RISK ANALYSIS SECTION -->
+
 <div class="dashboard">
 
-    <!-- High risk -->
+    <!-- High Risk -->
+
     <div class="card red">
 
-        <h4>High Risk</h4>
+        <h4>
+            High Risk
+            ({{ high_risk_percentage }}%)
+        </h4>
 
         <h2>
             {{ high_risk }}
         </h2>
 
+        <p class="subtitle">
+            Credit score below 600
+        </p>
+
     </div>
 
-    <!-- Medium risk -->
+
+    <!-- Medium Risk -->
+
     <div class="card">
 
-        <h4>Medium Risk</h4>
+        <h4>
+            Medium Risk
+            ({{ medium_risk_percentage }}%)
+        </h4>
 
         <h2>
             {{ medium_risk }}
         </h2>
 
+        <p class="subtitle">
+            Credit score between 600-750
+        </p>
+
     </div>
 
-    <!-- Low risk -->
+
+    <!-- Low Risk -->
+
     <div class="card green">
 
-        <h4>Low Risk</h4>
+        <h4>
+            Low Risk
+            ({{ low_risk_percentage }}%)
+        </h4>
 
         <h2>
             {{ low_risk }}
         </h2>
 
+        <p class="subtitle">
+            Credit score above 750
+        </p>
+
     </div>
 
 </div>
 
 
-<!-- Chart section -->
+<!-- EXTRA INSIGHT CARDS -->
+
+<div class="dashboard">
+
+    <!-- Safe Loans Count -->
+
+    <div class="card green">
+
+        <h4>Safe Loan Count</h4>
+
+        <h2>
+            {{ safe_loans_count }}
+        </h2>
+
+        <p class="subtitle">
+            Total loans marked safe
+        </p>
+
+    </div>
+
+
+    <!-- Average Defaulted Loan -->
+
+    <div class="card red">
+
+        <h4>Avg Defaulted Loan</h4>
+
+        <h2>
+            {{ "{:,.2f}".format(average_defaulted_loan) }}
+        </h2>
+
+        <p class="subtitle">
+            Average amount of defaulted loans
+        </p>
+
+    </div>
+
+
+    <!-- Large Loans -->
+
+    <div class="card">
+
+        <h4>Large Loans</h4>
+
+        <h2>
+            {{ large_loans }}
+        </h2>
+
+        <p class="subtitle">
+            Loans above 1 million
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- MOST RISKY CUSTOMER -->
+
+{% if most_risky_loan %}
+
+<div class="card red">
+
+    <h3>Most Risky Loan</h3>
+
+    <div class="dashboard">
+
+        <div>
+
+            <h4>Customer ID</h4>
+
+            <p>
+                {{ most_risky_loan.customer_id }}
+            </p>
+
+        </div>
+
+        <div>
+
+            <h4>Credit Score</h4>
+
+            <p>
+                {{ most_risky_loan.credit_score }}
+            </p>
+
+        </div>
+
+        <div>
+
+            <h4>Loan Amount</h4>
+
+            <p>
+                {{ "{:,.2f}".format(most_risky_loan.loan_amount) }}
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<!-- SYSTEM INSIGHTS -->
+
+{% if insights %}
+
+<div class="card">
+
+    <h3>System Insights</h3>
+
+    <ul>
+
+        {% for insight in insights %}
+
+        <li style="margin-bottom: 10px;">
+
+            {{ insight }}
+
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+</div>
+
+{% endif %}
+
+
+<!-- CHART SECTION -->
+
 <div class="card">
 
     <h3>Defaults by Age</h3>
 
-    <!-- Chart image -->
     <img
         src="{{ url_for('static', filename='chart.png') }}"
+        alt="Defaults by Age Chart"
     >
 
 </div>
 
 
-<!-- Risky customers table -->
+<!-- RISKY CUSTOMERS TABLE -->
+
 <div class="card">
 
     <h3>Top Risky Customers</h3>
+
+    <div class="table-wrapper">
 
     <table>
 
@@ -168,7 +373,7 @@
 
                 <th>ID</th>
                 <th>Age</th>
-                <th class="right">Income</th>
+                <th>Income</th>
 
             </tr>
 
@@ -176,7 +381,6 @@
 
         <tbody>
 
-            <!-- Show message if no risky customers -->
             {% if risky_customers.items|length == 0 %}
 
             <tr>
@@ -191,26 +395,23 @@
 
             {% endif %}
 
-            <!-- Loop through customers -->
+
             {% for c in risky_customers.items %}
 
             <tr>
 
-                <!-- Customer ID -->
                 <td class="center">
 
                     {{ c.id }}
 
                 </td>
 
-                <!-- Customer age -->
                 <td class="center">
 
                     {{ c.age }}
 
                 </td>
 
-                <!-- Customer income -->
                 <td class="right">
 
                     {{ "{:,.2f}".format(c.income)
@@ -227,10 +428,13 @@
 
     </table>
 
+    </div>
+
 </div>
 
 
-<!-- Pagination -->
+<!-- PAGINATION -->
+
 <div class="pagination">
 
     {% if risky_customers.has_prev %}
@@ -246,6 +450,7 @@
         </a>
 
     {% endif %}
+
 
     {% if risky_customers.has_next %}
 

@@ -49,7 +49,7 @@ def save_bar_chart(labels, values, colors, title, ylabel, path):
     if not values:
         values = [0]
 
-    plt.figure(figsize=(8, 4.5))
+    plt.figure(figsize=(11, 6))
 
     bars = plt.bar(
         labels,
@@ -65,7 +65,7 @@ def save_bar_chart(labels, values, colors, title, ylabel, path):
 
         plt.text(
             bar.get_x() + bar.get_width() / 2,
-            height + 80,
+            height + (max(values) * 0.01),
             str(int(height)),
             ha="center",
             fontsize=10,
@@ -269,8 +269,10 @@ def logout():
 def customers():
     """
     List view for all customers.
-    Includes functionality for searching by age,
-    sorting by income, and pagination.
+    Includes functionality for:
+    - Searching by customer ID
+    - Sorting customers
+    - Pagination
     """
 
     try:
@@ -287,52 +289,40 @@ def customers():
 
         query = Customer.query
 
-        # Age range search handling
+
+        # CUSTOMER ID SEARCH
+
         if search:
 
-            try:
+            query = query.filter(
+                Customer.id.cast(db.String).contains(search)
+            )
 
-                search_age = int(search)
 
-                customers_list = []
+        # SORTING OPTIONS
 
-                all_customers = query.all()
-
-                for customer in all_customers:
-
-                    if (
-                        customer.age
-                        and "-" in customer.age
-                    ):
-
-                        start, end = customer.age.split("-")
-
-                        if (
-                            int(start)
-                            <= search_age
-                            <= int(end)
-                        ):
-
-                            customers_list.append(
-                                customer.id
-                            )
-
-                query = query.filter(
-                    Customer.id.in_(customers_list)
-                )
-
-            except ValueError:
-
-                # Fallback to normal text search
-                query = query.filter(
-                    Customer.age.contains(search)
-                )
-
-        # Income sorting
-        if sort == "income":
+        if sort == "highest_income":
 
             query = query.order_by(
                 Customer.income.desc()
+            )
+
+        elif sort == "lowest_income":
+
+            query = query.order_by(
+                Customer.income.asc()
+            )
+
+        elif sort == "youngest":
+
+            query = query.order_by(
+                Customer.age.asc()
+            )
+
+        elif sort == "oldest":
+
+            query = query.order_by(
+                Customer.age.desc()
             )
 
         else:
@@ -340,6 +330,53 @@ def customers():
             query = query.order_by(
                 Customer.id
             )
+
+
+        # PAGINATION
+
+        customers_data = query.paginate(
+            page=page,
+            per_page=20
+        )
+
+
+        # EMPTY RESULT MESSAGE
+
+        if not customers_data.items:
+
+            flash(
+                "No customers found.",
+                "warning"
+            )
+
+
+        return render_template(
+            "customers.html",
+            customers=customers_data
+        )
+
+    except SQLAlchemyError as e:
+
+        db.session.rollback()
+
+        flash(
+            "Unable to load customers.",
+            "error"
+        )
+
+        print(e)
+
+        return render_template(
+            "errors/500.html"
+        ), 500
+
+    except Exception as e:
+
+        print(e)
+
+        return render_template(
+            "errors/general.html"
+        ), 500
 
         customers_data = query.paginate(
             page=page,
@@ -660,14 +697,24 @@ def customer_detail(id):
 @main.route("/loans")
 def loans():
     """
-    List view for all loans in the system.
-    Users can filter by minimum credit score.
-    Includes pagination for better performance.
+    List view for all loans.
+    Includes:
+    - Customer search
+    - Credit score filtering
+    - Risk filtering
+    - Sorting
+    - Pagination
     """
 
     try:
 
+        search = request.args.get("search")
+
         min_score = request.args.get("score")
+
+        sort = request.args.get("sort")
+
+        risk = request.args.get("risk")
 
         page = request.args.get(
             "page",
@@ -676,6 +723,18 @@ def loans():
         )
 
         query = Loan.query
+
+
+        # CUSTOMER ID SEARCH
+
+        if search:
+
+            query = query.filter(
+                Loan.customer_id.cast(db.String).contains(search)
+            )
+
+
+        # MINIMUM CREDIT SCORE FILTER
 
         if min_score:
 
@@ -701,7 +760,7 @@ def loans():
             except ValueError:
 
                 flash(
-                    "Enter a valid score.",
+                    "Enter a valid credit score.",
                     "error"
                 )
 
@@ -709,19 +768,78 @@ def loans():
                     "errors/400.html"
                 ), 400
 
-        loans_data = query.order_by(
-            Loan.id
-        ).paginate(
+
+        # RISK FILTERING
+
+        if risk == "high":
+
+            query = query.filter(
+                Loan.credit_score < 600
+            )
+
+        elif risk == "medium":
+
+            query = query.filter(
+                Loan.credit_score.between(600, 750)
+            )
+
+        elif risk == "low":
+
+            query = query.filter(
+                Loan.credit_score > 750
+            )
+
+
+        # SORTING OPTIONS
+
+        if sort == "highest_loan":
+
+            query = query.order_by(
+                Loan.loan_amount.desc()
+            )
+
+        elif sort == "lowest_loan":
+
+            query = query.order_by(
+                Loan.loan_amount.asc()
+            )
+
+        elif sort == "highest_score":
+
+            query = query.order_by(
+                Loan.credit_score.desc()
+            )
+
+        elif sort == "lowest_score":
+
+            query = query.order_by(
+                Loan.credit_score.asc()
+            )
+
+        else:
+
+            query = query.order_by(
+                Loan.id
+            )
+
+
+        # PAGINATION
+
+        loans_data = query.paginate(
             page=page,
             per_page=20
         )
 
+
+        # EMPTY RESULTS
+
         if not loans_data.items:
 
             flash(
-                "No loans matched the filter.",
+                "No loans matched the filters.",
                 "warning"
             )
+
 
         return render_template(
             "loans.html",
@@ -1020,7 +1138,8 @@ def delete_loan(id):
 def analysis():
     """
     Statistical analysis view.
-    Generates reports on defaults, averages, and identifies risky clients.
+    Generates reports on defaults, averages,
+    risk distribution, and risky customers.
     """
 
     try:
@@ -1031,25 +1150,42 @@ def analysis():
             type=int
         )
 
+        # AVERAGE CUSTOMER INCOME
+
         avg_income = db.session.query(
             func.avg(Customer.income)
         ).scalar()
+
+
+        # AVERAGE LOAN
 
         avg_loan = db.session.query(
             func.avg(Loan.loan_amount)
         ).scalar()
 
+
+        # MAXIMUM LOAN
+
         max_loan = db.session.query(
             func.max(Loan.loan_amount)
         ).scalar()
+
+
+        # AVERAGE CREDIT SCORE
 
         average_credit_score = db.session.query(
             func.avg(Loan.credit_score)
         ).scalar()
 
+
+        # TOTAL LOANS
+
         total_loans = db.session.query(
             func.count(Loan.id)
         ).scalar()
+
+
+        # TOTAL DEFAULTS
 
         total_defaults = db.session.query(
             func.count(Loan.id)
@@ -1057,7 +1193,9 @@ def analysis():
             Loan.default_status == 1
         ).scalar()
 
-        # Default percentage calculation
+
+        # DEFAULT RATE
+
         default_percentage = 0
 
         if total_loans > 0:
@@ -1067,11 +1205,16 @@ def analysis():
                 2
             )
 
-        # Safe loan percentage calculation
+
+        # SAFE LOAN RATE
+
         safe_percentage = round(
             100 - default_percentage,
             2
         )
+
+
+        # RISK COUNTS
 
         high_risk = db.session.query(
             func.count(Loan.id)
@@ -1079,17 +1222,112 @@ def analysis():
             Loan.credit_score < 600
         ).scalar()
 
+
         medium_risk = db.session.query(
             func.count(Loan.id)
         ).filter(
             Loan.credit_score.between(600, 750)
         ).scalar()
 
+
         low_risk = db.session.query(
             func.count(Loan.id)
         ).filter(
             Loan.credit_score > 750
         ).scalar()
+
+
+        # RISK PERCENTAGES
+
+        high_risk_percentage = 0
+        medium_risk_percentage = 0
+        low_risk_percentage = 0
+
+        if total_loans > 0:
+
+            high_risk_percentage = round(
+                (high_risk / total_loans) * 100,
+                2
+            )
+
+            medium_risk_percentage = round(
+                (medium_risk / total_loans) * 100,
+                2
+            )
+
+            low_risk_percentage = round(
+                (low_risk / total_loans) * 100,
+                2
+            )
+
+
+        # MOST RISKY CUSTOMER
+
+        most_risky_loan = Loan.query.filter(
+            Loan.credit_score < 600
+        ).order_by(
+            Loan.credit_score.asc(),
+            Loan.loan_amount.desc()
+        ).first()
+
+
+        # SAFE LOAN COUNT
+
+        safe_loans_count = db.session.query(
+            func.count(Loan.id)
+        ).filter(
+            Loan.default_status == 0
+        ).scalar()
+
+
+        # AVERAGE DEFAULTED LOAN
+
+        average_defaulted_loan = db.session.query(
+            func.avg(Loan.loan_amount)
+        ).filter(
+            Loan.default_status == 1
+        ).scalar()
+
+
+        # LARGE LOANS ABOVE 1 MILLION
+
+        large_loans = db.session.query(
+            func.count(Loan.id)
+        ).filter(
+            Loan.loan_amount > 1000000
+        ).scalar()
+
+
+        # INSIGHTS SECTION
+
+        insights = []
+
+        if medium_risk > high_risk and medium_risk > low_risk:
+
+            insights.append(
+                "Medium risk loans are the largest category."
+            )
+
+        if average_credit_score > 700:
+
+            insights.append(
+                "Average credit score remains above 700."
+            )
+
+        if default_percentage > 20:
+
+            insights.append(
+                "Default rate is relatively high."
+            )
+
+        if large_loans > 0:
+
+            insights.append(
+                f"There are {large_loans} loans above 1 million."
+            )
+
+
+        # DEFAULTS BY AGE
 
         defaults_by_age = db.session.query(
             Customer.age,
@@ -1103,9 +1341,13 @@ def analysis():
             Customer.age
         ).all()
 
+
         ages = [str(item[0]) for item in defaults_by_age]
 
         counts = [item[1] for item in defaults_by_age]
+
+
+        # CHART GENERATION
 
         chart_path = os.path.join(
             "app",
@@ -1122,6 +1364,9 @@ def analysis():
             chart_path
         )
 
+
+        # RISKY CUSTOMERS
+
         risky_customers = db.session.query(
             Customer
         ).join(
@@ -1134,6 +1379,7 @@ def analysis():
             per_page=10
         )
 
+
         if not risky_customers.items:
 
             flash(
@@ -1141,22 +1387,54 @@ def analysis():
                 "warning"
             )
 
+
         return render_template(
             "analysis.html",
+
             avg_income=round(avg_income or 0, 2),
+
             avg_loan=round(avg_loan or 0, 2),
+
             max_loan=round(max_loan or 0, 2),
+
             average_credit_score=round(
                 average_credit_score or 0,
                 2
             ),
+
             total_defaults=total_defaults or 0,
+
             default_percentage=default_percentage,
+
             safe_percentage=safe_percentage,
+
             high_risk=high_risk or 0,
+
             medium_risk=medium_risk or 0,
+
             low_risk=low_risk or 0,
+
+            high_risk_percentage=high_risk_percentage,
+
+            medium_risk_percentage=medium_risk_percentage,
+
+            low_risk_percentage=low_risk_percentage,
+
+            most_risky_loan=most_risky_loan,
+
+            safe_loans_count=safe_loans_count,
+
+            average_defaulted_loan=round(
+                average_defaulted_loan or 0,
+                2
+            ),
+
+            large_loans=large_loans,
+
+            insights=insights,
+
             defaults_by_age=defaults_by_age,
+
             risky_customers=risky_customers
         )
 

@@ -2,10 +2,13 @@
 
 {% block content %}
 
-<!-- Page heading -->
+<!-- PAGE HEADER -->
+
 <div class="page-header">
 
-    <h2>Customers</h2>
+    <h2>
+        Customers
+    </h2>
 
     <p class="subtitle">
         Browse customer data
@@ -14,7 +17,8 @@
 </div>
 
 
-<!-- Add customer button -->
+<!-- ACTION BUTTONS -->
+
 <div class="action-bar">
 
     <a
@@ -27,15 +31,24 @@
 </div>
 
 
-<!-- Search form -->
-<form method="GET" class="filter-bar">
+<!-- SEARCH + FILTER FORM -->
+
+<form
+    method="GET"
+    class="filter-bar"
+>
+
+    <!-- SEARCH INPUT -->
 
     <input
         type="text"
         name="search"
-        placeholder="Search by age"
+        placeholder="Search by customer ID"
         value="{{ request.args.get('search', '') }}"
     >
+
+
+    <!-- SORT OPTIONS -->
 
     <select name="sort">
 
@@ -43,11 +56,46 @@
             Sort By
         </option>
 
-        <option value="income">
+        <option
+            value="highest_income"
+            {% if request.args.get('sort') == 'highest_income' %}
+                selected
+            {% endif %}
+        >
             Highest Income
         </option>
 
+        <option
+            value="lowest_income"
+            {% if request.args.get('sort') == 'lowest_income' %}
+                selected
+            {% endif %}
+        >
+            Lowest Income
+        </option>
+
+        <option
+            value="youngest"
+            {% if request.args.get('sort') == 'youngest' %}
+                selected
+            {% endif %}
+        >
+            Youngest Age
+        </option>
+
+        <option
+            value="oldest"
+            {% if request.args.get('sort') == 'oldest' %}
+                selected
+            {% endif %}
+        >
+            Oldest Age
+        </option>
+
     </select>
+
+
+    <!-- SEARCH BUTTON -->
 
     <button class="btn">
         Search
@@ -56,7 +104,8 @@
 </form>
 
 
-<!-- Responsive table -->
+<!-- CUSTOMER TABLE -->
+
 <div class="table-wrapper">
 
 <table>
@@ -65,10 +114,21 @@
 
         <tr>
 
-            <th>ID</th>
-            <th>Age</th>
-            <th class="right">Income</th>
-            <th class="center">Actions</th>
+            <th>
+                ID
+            </th>
+
+            <th>
+                Age
+            </th>
+
+            <th class="right">
+                Income
+            </th>
+
+            <th class="center">
+                Actions
+            </th>
 
         </tr>
 
@@ -80,7 +140,10 @@
 
         <tr>
 
-            <td colspan="4" class="center">
+            <td
+                colspan="4"
+                class="center"
+            >
 
                 No customers found.
 
@@ -90,9 +153,12 @@
 
         {% endif %}
 
+
         {% for c in customers.items %}
 
         <tr>
+
+            <!-- CUSTOMER ID -->
 
             <td class="center">
 
@@ -104,11 +170,17 @@
 
             </td>
 
+
+            <!-- CUSTOMER AGE -->
+
             <td class="center">
 
                 {{ c.age }}
 
             </td>
+
+
+            <!-- CUSTOMER INCOME -->
 
             <td class="right">
 
@@ -118,10 +190,13 @@
 
             </td>
 
-            <!-- Actions -->
+
+            <!-- ACTION BUTTONS -->
+
             <td class="center">
 
-                <!-- Update button -->
+                <!-- UPDATE -->
+
                 <a
                     href="{{ url_for('main.update_customer', id=c.id) }}"
                     class="btn"
@@ -129,7 +204,9 @@
                     Update
                 </a>
 
-                <!-- Delete button -->
+
+                <!-- DELETE -->
+
                 <a
                     href="{{ url_for('main.delete_customer', id=c.id) }}"
                     class="btn danger-btn"
@@ -151,7 +228,8 @@
 </div>
 
 
-<!-- Pagination -->
+<!-- PAGINATION -->
+
 <div class="pagination">
 
     {% if customers.has_prev %}
@@ -169,6 +247,7 @@
         </a>
 
     {% endif %}
+
 
     {% if customers.has_next %}
 

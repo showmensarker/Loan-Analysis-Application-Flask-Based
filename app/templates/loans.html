@@ -2,10 +2,13 @@
 
 {% block content %}
 
-<!-- Page heading -->
+<!-- PAGE HEADER -->
+
 <div class="page-header">
 
-    <h2>Loans</h2>
+    <h2>
+        Loans
+    </h2>
 
     <p class="subtitle">
         Loan performance and credit scores
@@ -14,7 +17,8 @@
 </div>
 
 
-<!-- Add loan button -->
+<!-- ADD LOAN BUTTON -->
+
 <div class="action-bar">
 
     <a
@@ -27,8 +31,24 @@
 </div>
 
 
-<!-- Filter form -->
-<form method="GET" class="filter-bar">
+<!-- FILTER + SEARCH FORM -->
+
+<form
+    method="GET"
+    class="filter-bar"
+>
+
+    <!-- CUSTOMER ID SEARCH -->
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Customer ID"
+        value="{{ request.args.get('search', '') }}"
+    >
+
+
+    <!-- MINIMUM CREDIT SCORE -->
 
     <input
         type="number"
@@ -37,6 +57,59 @@
         value="{{ request.args.get('score', '') }}"
     >
 
+
+    <!-- SORT OPTIONS -->
+
+    <select name="sort">
+
+        <option value="">
+            Sort By
+        </option>
+
+        <option value="highest_loan">
+            Highest Loan
+        </option>
+
+        <option value="lowest_loan">
+            Lowest Loan
+        </option>
+
+        <option value="highest_score">
+            Highest Credit Score
+        </option>
+
+        <option value="lowest_score">
+            Lowest Credit Score
+        </option>
+
+    </select>
+
+
+    <!-- RISK FILTER -->
+
+    <select name="risk">
+
+        <option value="">
+            Risk Level
+        </option>
+
+        <option value="high">
+            High Risk
+        </option>
+
+        <option value="medium">
+            Medium Risk
+        </option>
+
+        <option value="low">
+            Low Risk
+        </option>
+
+    </select>
+
+
+    <!-- FILTER BUTTON -->
+
     <button class="btn">
         Filter
     </button>
@@ -44,7 +117,8 @@
 </form>
 
 
-<!-- Responsive table -->
+<!-- RESPONSIVE TABLE -->
+
 <div class="table-wrapper">
 
 <table>
@@ -53,13 +127,33 @@
 
         <tr>
 
-            <th>ID</th>
-            <th>Loan Amount</th>
-            <th>Score</th>
-            <th>Customer</th>
-            <th>Risk</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>
+                ID
+            </th>
+
+            <th>
+                Loan Amount
+            </th>
+
+            <th>
+                Score
+            </th>
+
+            <th>
+                Customer
+            </th>
+
+            <th>
+                Risk
+            </th>
+
+            <th>
+                Status
+            </th>
+
+            <th>
+                Actions
+            </th>
 
         </tr>
 
@@ -71,7 +165,10 @@
 
         <tr>
 
-            <td colspan="7" class="center">
+            <td
+                colspan="7"
+                class="center"
+            >
 
                 No loans found.
 
@@ -81,9 +178,12 @@
 
         {% endif %}
 
+
         {% for loan in loans.items %}
 
         <tr>
+
+            <!-- LOAN ID -->
 
             <td>
 
@@ -91,17 +191,26 @@
 
             </td>
 
+
+            <!-- LOAN AMOUNT -->
+
             <td>
 
                 {{ "{:,.2f}".format(loan.loan_amount or 0) }}
 
             </td>
 
+
+            <!-- CREDIT SCORE -->
+
             <td>
 
                 {{ loan.credit_score }}
 
             </td>
+
+
+            <!-- CUSTOMER LINK -->
 
             <td>
 
@@ -113,7 +222,9 @@
 
             </td>
 
-            <!-- Risk -->
+
+            <!-- RISK LEVEL -->
+
             <td>
 
                 {% if loan.credit_score < 600 %}
@@ -138,7 +249,9 @@
 
             </td>
 
-            <!-- Status -->
+
+            <!-- LOAN STATUS -->
+
             <td>
 
                 {% if loan.default_status == 1 %}
@@ -157,10 +270,13 @@
 
             </td>
 
-            <!-- Actions -->
+
+            <!-- ACTION BUTTONS -->
+
             <td>
 
-                <!-- Update button -->
+                <!-- UPDATE -->
+
                 <a
                     href="{{ url_for('main.update_loan', id=loan.id) }}"
                     class="btn"
@@ -168,7 +284,9 @@
                     Update
                 </a>
 
-                <!-- Delete button -->
+
+                <!-- DELETE -->
+
                 <a
                     href="{{ url_for('main.delete_loan', id=loan.id) }}"
                     class="btn danger-btn"
@@ -190,7 +308,8 @@
 </div>
 
 
-<!-- Pagination -->
+<!-- PAGINATION -->
+
 <div class="pagination">
 
     {% if loans.has_prev %}
@@ -199,7 +318,10 @@
             href="{{ url_for(
                 'main.loans',
                 page=loans.prev_num,
-                score=request.args.get('score', '')
+                search=request.args.get('search', ''),
+                score=request.args.get('score', ''),
+                sort=request.args.get('sort', ''),
+                risk=request.args.get('risk', '')
             ) }}"
             class="btn"
         >
@@ -208,13 +330,17 @@
 
     {% endif %}
 
+
     {% if loans.has_next %}
 
         <a
             href="{{ url_for(
                 'main.loans',
                 page=loans.next_num,
-                score=request.args.get('score', '')
+                search=request.args.get('search', ''),
+                score=request.args.get('score', ''),
+                sort=request.args.get('sort', ''),
+                risk=request.args.get('risk', '')
             ) }}"
             class="btn"
         >
