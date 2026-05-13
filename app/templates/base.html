@@ -5,126 +5,173 @@
 
     <meta charset="UTF-8">
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>
         Loan Analysis App
     </title>
+
+    <!-- MAIN CSS -->
 
     <link
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
 
+    <!-- BROWSER TAB ICON -->
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="{{ url_for('static', filename='favicon.png') }}"
+    >
+
 </head>
 
 <body>
 
-<div class="layout">
+<!-- TOP NAVIGATION BAR -->
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+<nav class="topbar">
 
-        <h2 class="logo">
-            LoanApp
-        </h2>
+    <div class="logo">
+        LoanScope
+    </div>
 
-        <!-- Navigation -->
-        <a
-            href="/"
-            class="nav-item {{ 'active' if request.path == '/' else '' }}"
-        >
-            Home
-        </a>
+    <ul class="nav-links">
 
-        <a
-            href="/customers"
-            class="nav-item {{ 'active' if request.path == '/customers' else '' }}"
-        >
-            Customers
-        </a>
+        <li>
+            <a
+                href="/"
+                class="{{ 'active' if request.path == '/' else '' }}"
+            >
+                Home
+            </a>
+        </li>
 
-        <a
-            href="/loans"
-            class="nav-item {{ 'active' if request.path == '/loans' else '' }}"
-        >
-            Loans
-        </a>
+        <li>
+            <a
+                href="/customers"
+                class="{{ 'active' if request.path == '/customers' else '' }}"
+            >
+                Customers
+            </a>
+        </li>
 
-        <a
-            href="/analysis"
-            class="nav-item {{ 'active' if request.path == '/analysis' else '' }}"
-        >
-            Analysis
-        </a>
+        <li>
+            <a
+                href="/loans"
+                class="{{ 'active' if request.path == '/loans' else '' }}"
+            >
+                Loans
+            </a>
+        </li>
 
-        <!-- Authentication Links -->
+        <li>
+            <a
+                href="/analysis"
+                class="{{ 'active' if request.path == '/analysis' else '' }}"
+            >
+                Analysis
+            </a>
+        </li>
+
         {% if "user" in session %}
 
-            <a
-                href="/logout"
-                class="nav-item"
-            >
-                Logout
-            </a>
+            <li>
+                <a href="/logout">
+                    Logout
+                </a>
+            </li>
 
         {% else %}
 
-            <a
-                href="/login"
-                class="nav-item"
-            >
-                Login
-            </a>
+            <li>
+                <a href="/login">
+                    Login
+                </a>
+            </li>
 
         {% endif %}
 
-    </aside>
+    </ul>
+
+</nav>
 
 
-    <!-- Main Content -->
-    <main class="main">
+<!-- MAIN CONTENT -->
 
-        <!-- Flash Messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
+<main class="main">
 
-            {% if messages %}
+    <!-- FLASH MESSAGES -->
 
-                {% for category, message in messages %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
 
-                    <div
-                        class="card"
-                        style="border-left-color: #27ae60;"
-                    >
-                        {{ message }}
-                    </div>
+        {% if messages %}
 
-                {% endfor %}
+            {% for category, message in messages %}
 
-            {% endif %}
+                <div
+                    class="card"
+                    style="border-left-color: #27ae60;"
+                >
+                    {{ message }}
+                </div>
 
-        {% endwith %}
+            {% endfor %}
 
+        {% endif %}
 
-        <!-- Page Content -->
-        {% block content %}
-        {% endblock %}
+    {% endwith %}
 
 
-        <!-- Footer -->
-        <footer class="footer">
+    <!-- DYNAMIC PAGE CONTENT -->
 
-            <p>
-                Loan Analysis System | Flask Project
-            </p>
+    {% block content %}
+    {% endblock %}
 
-            <span class="copyright">
-                © 2026 Showmen Sarker
-            </span>
 
-        </footer>
+    <!-- FOOTER -->
 
-    </main>
+    <footer class="footer">
 
-</div>
+        <p>
+            Loan Analysis System | Flask Project
+        </p>
+
+        <span class="copyright">
+            © 2026 Showmen Sarker
+        </span>
+
+    </footer>
+
+</main>
+
+
+<!-- TRANSPARENT NAVBAR ON SCROLL -->
+
+<script>
+
+window.addEventListener("scroll", function () {
+
+    const navbar = document.querySelector(".topbar");
+
+    if (window.scrollY > 50) {
+
+        navbar.classList.add("scrolled");
+
+    } else {
+
+        navbar.classList.remove("scrolled");
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
