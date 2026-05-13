@@ -18,6 +18,13 @@ body {
 }
 
 
+* {
+
+    box-sizing: border-box;
+
+}
+
+
 a {
 
     text-decoration: none;
@@ -48,8 +55,6 @@ a {
     z-index: 1000;
 
     padding: 12px 25px;
-
-    box-sizing: border-box;
 
     backdrop-filter: blur(10px);
 
@@ -113,6 +118,8 @@ a {
 
     padding: 0;
 
+    flex-wrap: wrap;
+
 }
 
 
@@ -159,9 +166,9 @@ a {
 
     padding: 30px;
 
-    box-sizing: border-box;
-
     background: rgba(255, 255, 255, 0.55);
+
+    overflow-x: hidden;
 
 }
 
@@ -286,6 +293,8 @@ a {
 
 .table-wrapper {
 
+    width: 100%;
+
     overflow-x: auto;
 
 }
@@ -294,6 +303,8 @@ a {
 table {
 
     width: 100%;
+
+    min-width: 700px;
 
     border-collapse: collapse;
 
@@ -409,6 +420,8 @@ table a:hover {
 
 .card {
 
+    width: 100%;
+
     margin-bottom: 20px;
 
     padding: 24px;
@@ -424,6 +437,8 @@ table a:hover {
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease;
+
+    overflow: hidden;
 
 }
 
@@ -452,7 +467,9 @@ table a:hover {
 
 .card img {
 
-    width: 80%;
+    width: 100%;
+
+    max-width: 100%;
 
     max-height: 420px;
 
@@ -472,11 +489,13 @@ table a:hover {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit, minmax(320px, 1fr));
+        repeat(auto-fit, minmax(280px, 1fr));
 
-    gap: 22px;
+    gap: 24px;
 
     margin-top: 20px;
+
+    width: 100%;
 
 }
 
@@ -493,6 +512,8 @@ table a:hover {
 .form-card {
 
     max-width: 500px;
+
+    width: 100%;
 
     margin: auto;
 
@@ -523,6 +544,8 @@ table a:hover {
 
     background: white;
 
+    width: 100%;
+
 }
 
 
@@ -538,12 +561,16 @@ table a:hover {
 
     min-height: 70vh;
 
+    padding: 20px;
+
 }
 
 
 .login-card {
 
-    width: 400px;
+    width: 100%;
+
+    max-width: 400px;
 
     background: rgba(255, 255, 255, 0.95);
 
@@ -589,6 +616,8 @@ table a:hover {
     border-radius: 10px;
 
     font-size: 16px;
+
+    width: 100%;
 
 }
 
@@ -644,6 +673,8 @@ table a:hover {
 
     margin-bottom: 20px;
 
+    flex-wrap: wrap;
+
 }
 
 
@@ -681,9 +712,9 @@ table a:hover {
 
         flex-direction: column;
 
-        gap: 10px;
+        gap: 12px;
 
-        padding: 12px;
+        padding: 14px;
 
     }
 
@@ -697,11 +728,9 @@ table a:hover {
 
         position: static;
 
-        flex-wrap: wrap;
-
         justify-content: center;
 
-        gap: 10px;
+        gap: 8px;
 
     }
 
@@ -709,7 +738,7 @@ table a:hover {
 
         font-size: 13px;
 
-        padding: 5px 8px;
+        padding: 6px 10px;
 
     }
 
@@ -731,6 +760,20 @@ table a:hover {
     .dashboard {
 
         grid-template-columns: 1fr;
+
+        gap: 18px;
+
+    }
+
+    .card {
+
+        padding: 18px;
+
+    }
+
+    .card img {
+
+        width: 100%;
 
     }
 
